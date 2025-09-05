@@ -1,0 +1,7 @@
+{
+  "dart.flutterSdkPath": "/home/akeed/snap/flutter/common/flutter",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
+}
