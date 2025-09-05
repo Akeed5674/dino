@@ -2,6 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 import '../game/dino_game.dart';
 import 'rock.dart';
+import 'meteor.dart'; // Import Meteor
+import 'ptero.dart';  // Import Ptero
 
 class Player extends SpriteComponent
     with HasGameRef<DinoGame>, CollisionCallbacks {
@@ -46,11 +48,19 @@ class Player extends SpriteComponent
   }
 
   @override
-  void onCollision(Set<Vector2> _, PositionComponent other) {
-    if (other is Rock && _alive) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (!_alive) return;
+
+    // FIX: Check for collision with all hazardous obstacles, not just rocks.
+    // We also check if the meteor is a background element.
+    if (other is Rock || other is Ptero) {
       _alive = false;
       gameRef.gameOver();
     }
-    super.onCollision(_, other);
+    if (other is Meteor && !other.background) {
+      _alive = false;
+      gameRef.gameOver();
+    }
   }
 }

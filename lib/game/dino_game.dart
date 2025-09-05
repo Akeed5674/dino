@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/events.dart';            // TapDownEvent
+import 'package:flame/events.dart';
 import 'package:flame/collisions.dart';
+import 'package:flutter/services.dart';
 
 import '../components/sky.dart';
 import '../components/parallax_bg.dart';
@@ -12,10 +15,6 @@ import '../components/rock.dart';
 import '../components/score_text.dart';
 import '../components/meteor.dart';
 import '../components/ptero.dart';
-import 'package:flutter/services.dart';
-
-
-
 
 class DinoGame extends FlameGame
     with TapCallbacks, KeyboardEvents, HasCollisionDetection {
@@ -35,11 +34,13 @@ class DinoGame extends FlameGame
   double _pteroTimer = 4;
   bool _running = false;
 
+  final rand = Random();
+
   @override
   Future<void> onLoad() async {
     // Flame 1.32.x
-camera.viewfinder.visibleGameSize = Vector2(_worldW, _worldH);
-camera.viewfinder.position = Vector2(_worldW / 2, _worldH / 2);
+    camera.viewfinder.visibleGameSize = Vector2(_worldW, _worldH);
+    camera.viewfinder.position = Vector2(_worldW / 2, _worldH / 2);
     // Far -> near
     add(Sky(priority: 0));
     add(ParallaxBg(priority: 1)); // mountains/volcano
@@ -120,20 +121,17 @@ camera.viewfinder.position = Vector2(_worldW / 2, _worldH / 2);
     super.onTapDown(event);
   }
 
-@override
-KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keys) {
-  if (event is KeyDownEvent) {
-    if (event.logicalKey == LogicalKeyboardKey.space ||
-        event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      if (_running) player.jump();
-      return KeyEventResult.handled;
+  @override
+  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keys) {
+    if (event is KeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.space ||
+          event.logicalKey == LogicalKeyboardKey.arrowUp) {
+        if (_running) player.jump();
+        return KeyEventResult.handled;
+      }
     }
+    return KeyEventResult.ignored;
   }
-  return KeyEventResult.ignored;
-}
-
-
-
 
   void gameOver() {
     _running = false;
