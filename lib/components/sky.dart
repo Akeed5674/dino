@@ -34,18 +34,19 @@ class _SkyBg extends PositionComponent {
   void render(ui.Canvas canvas) {
     super.render(canvas);
 
-    final dayTop = const ui.Color(0xFF87CEEB);
+    final dayTop = const ui.Color(0xFF6CA1D0);
     final dayBottom = const ui.Color(0xFFB3E5FC);
     final nightTop = const ui.Color(0xFF0A1430);
-    final nightBottom = const ui.Color(0xFF152852);
+    final nightBottom = const ui.Color(0xFF2C3E50);
 
-    final nightness = 0.5 + 0.5 * (1 - math.cos(_phase)); // 0..1
+    final nightness = 0.5 + 0.5 * (1 - math.cos(_phase));
     final top = ui.Color.lerp(dayTop, nightTop, nightness)!;
     final bottom = ui.Color.lerp(dayBottom, nightBottom, nightness)!;
 
     final rect = ui.Offset.zero & size.toSize();
     final paint = ui.Paint()
-      ..shader = ui.Gradient.linear(rect.topCenter, rect.bottomCenter, [top, bottom]);
+      ..shader =
+          ui.Gradient.linear(rect.topCenter, rect.bottomCenter, [top, bottom]);
     canvas.drawRect(rect, paint);
   }
 }
